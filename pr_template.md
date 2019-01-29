@@ -18,7 +18,6 @@ closes #
 - [ ] The code is fully tested (greater than 98% coverage)
 - [ ] There is no unused/commented out code
 
-
 # Testing Changes
 ____ No Tests have been changed
 ____ Some Tests have been changed
