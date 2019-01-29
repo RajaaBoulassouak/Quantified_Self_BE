@@ -4,7 +4,10 @@ module.exports = {
 
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/publications',
+    connection: 'postgres://localhost/quantified_self_be',
+    migrations: {
+      directory: './db/migrations'
+    },
     useNullAsDefault: true
   },
 
