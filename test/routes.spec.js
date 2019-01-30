@@ -66,6 +66,18 @@ describe('API Routes', () => {
         done();
       });
     });
+    
+    it('should return 404 if food with given id is not found', done => {
+       chai.request(server)
+       .get('/api/v1/foods/3')
+       .end((error, response) => {
+         response.should.have.status(404);
+         response.should.be.json;
+         response.body.should.have.property('error');
+         response.body.error.should.equal('Could not find food with id 3');
+         done();
+       });
+     });
   });
   
   describe('DELETE /api/v1/foods/:id', () => {
