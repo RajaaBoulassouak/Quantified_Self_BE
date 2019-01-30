@@ -63,7 +63,7 @@ app.get('/api/v1/foods/:id', (request, response) => {
           error: `Could not find food with id ${request.params.id}`
         });
       }
-    })''
+    })
     .catch(error => {
       response.status(500).json({ error });
     });
