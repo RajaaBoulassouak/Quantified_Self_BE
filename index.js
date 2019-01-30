@@ -7,7 +7,7 @@ const database = require('knex')(configuration);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set('port', process.env.PORT || 3000);
+// app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Quantified-Self-BE';
 
 app.post('/api/v1/foods', (request, response) => {
@@ -38,6 +38,10 @@ app.get('/api/v1/foods', (request, response) => {
   });
 });
 
-app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log('Express server listening on port', port)
 });
+// app.listen(app.get('port'), () => {
+//   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+// });
