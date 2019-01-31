@@ -28,6 +28,16 @@ app.post('/api/v1/foods', (request, response) => {
   });
 });
 
+app.patch('/api/v1/foods/:id', (request, response) => {
+  database('foods').where('id', request.params.id).update({title: request.body.title, calories: request.body.calories})
+  .then((foods) => {
+    response.status(200).json({message: 'Food updated!', foods});
+  })
+  .catch((error) => {
+    response.status(500).json({ error });
+  });
+});                     
+
 app.get('/api/v1/foods', (request, response) => {
   database('foods').select()
   .then((foods) => {
@@ -44,9 +54,7 @@ app.get('/api/v1/foods/:id', (request, response) => {
       if (foods.length) {
         response.status(200).json(foods);
       } else {
-        response.status(404).json({
-          error: `Could not find food with id ${request.params.id}`
-        });
+        response.status(404).json({ error: `Could not find food with id ${request.params.id}` });
       }
     })
     .catch(error => {
