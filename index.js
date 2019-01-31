@@ -15,7 +15,7 @@ app.post('/api/v1/foods', (request, response) => {
   for (let requiredParameter of ['title', 'calories']) {
     if (!food[requiredParameter]) {
       return response
-      .status(422)
+      .status(400)
       .send({ error: `Expected format: { title: <String>, calories: <Integer> }. You're missing a "${requiredParameter}" property.` });
     }
   }                           
@@ -25,21 +25,6 @@ app.post('/api/v1/foods', (request, response) => {
   })
   .catch(error => {
     response.status(400).json({ error });
-  });
-});
-
-
-app.delete('/api/v1/foods/:id', (request, response) => {
-  database('foods').where('id', request.params.id).delete()
-  .then(foods => {
-    if (foods == 1) {
-      response.status(204).json({success: true});
-    } else {
-      response.status(404).json({ error });
-      }
-    })
-  .catch((error) => {
-    response.status(500).json({ error });
   });
 });
 
@@ -63,10 +48,24 @@ app.get('/api/v1/foods/:id', (request, response) => {
           error: `Could not find food with id ${request.params.id}`
         });
       }
-    })''
+    })
     .catch(error => {
       response.status(500).json({ error });
     });
+});
+
+app.delete('/api/v1/foods/:id', (request, response) => {
+  database('foods').where('id', request.params.id).delete()
+  .then(foods => {
+    if (foods == 1) {
+      response.status(204).json({success: true});
+    } else {
+      response.status(404).json({ error });
+      }
+    })
+  .catch((error) => {
+    response.status(500).json({ error });
+  });
 });
 
 app.listen(app.get('port'), () => {
