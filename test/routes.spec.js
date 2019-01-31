@@ -49,6 +49,21 @@ describe('API Routes', () => {
     });
   });
   
+  it('should not create a record with missing attribute', done => {
+    chai.request(server)
+    .post('/api/v1/foods')
+    .send({
+      title: 'Orange',
+    })
+    .end((error, response) => {
+      response.should.have.status(400);
+      response.body.error.should.equal(
+        `Expected format: { title: <String>, calories: <Integer> }. You're missing a "calories" property.`
+      );
+      done();
+    });
+  });
+  
   describe('GET /api/v1/foods', () => {
    it('should return all of the foods', done => {
       chai.request(server)
