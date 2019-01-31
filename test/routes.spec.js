@@ -64,6 +64,26 @@ describe('API Routes', () => {
     });
   });
   
+  describe('PATCH /api/v1/foods/:id', () => {
+    it('it should UPDATE a food given the id', (done) => {
+      chai.request(server)
+      .patch('/api/v1/foods/1')
+      .send({ title: 'Orange', calories: 45 })
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.body.should.have.property('message');
+        response.body.message.should.equal('Food updated!');
+        chai.request(server)
+        .get('/api/v1/foods/1')
+        .end((error, response) => {
+          response.body[0].title.should.equal('Orange');
+          response.body[0].calories.should.equal(45);
+          done();
+        });
+      });
+    });
+  });
+  
   describe('GET /api/v1/foods', () => {
    it('should return all of the foods', done => {
       chai.request(server)
