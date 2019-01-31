@@ -147,4 +147,22 @@ describe('API Routes', () => {
       });
     });
   });
+  
+  describe('GET /api/v1/meals', () => {
+   it('should return all of the meals', done => {
+      chai.request(server)
+      .get('/api/v1/meals')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(4);
+        response.body[0].should.have.property('type');
+        response.body[0].type.should.equal('Breakfast');
+        response.body[0].should.have.property('goal_calories');
+        response.body[0].goal_calories.should.equal(650);
+        done();
+      });
+    });
+  });
 });
