@@ -47,20 +47,34 @@ describe('API Routes', () => {
         done();
       });
     });
-  });
   
-  it('should not create a record with missing attribute', done => {
-    chai.request(server)
-    .post('/api/v1/foods')
-    .send({
-      title: 'Orange',
-    })
-    .end((error, response) => {
-      response.should.have.status(400);
-      response.body.error.should.equal(
-        `Expected format: { title: <String>, calories: <Integer> }. You're missing a "calories" property.`
-      );
-      done();
+    it('should not create a record with missing attribute', done => {
+      chai.request(server)
+      .post('/api/v1/foods')
+      .send({
+        title: 'Orange',
+      })
+      .end((error, response) => {
+        response.should.have.status(400);
+        response.body.error.should.equal(
+          `Expected format: { title: <String>, calories: <Integer> }. You're missing a "calories" property.`
+        );
+        done();
+      });
+    });
+    it('should not update a record with missing attribute', done => {
+      chai.request(server)
+      .patch('/api/v1/foods/1')
+      .send({
+        calories: 45
+      })
+      .end((error, response) => {
+        response.should.have.status(400);
+        response.body.error.should.equal(
+          `Expected format: { title: <String>, calories: <Integer> }. You're missing a "title" property.`
+        );
+        done();
+      });
     });
   });
   
@@ -80,6 +94,21 @@ describe('API Routes', () => {
           response.body[0].calories.should.equal(45);
           done();
         });
+      });
+    });
+  
+    it('should not update a record with missing attribute', done => {
+      chai.request(server)
+      .patch('/api/v1/foods/1')
+      .send({
+        calories: 45
+      })
+      .end((error, response) => {
+        response.should.have.status(400);
+        response.body.error.should.equal(
+          `Expected format: { title: <String>, calories: <Integer> }. You're missing a "title" property.`
+        );
+        done();
       });
     });
   });
@@ -103,7 +132,7 @@ describe('API Routes', () => {
   });
   
   describe('GET /api/v1/foods/:id', () => {
-   it('should return a food given the id', done => {
+    it('should return a food given the id', done => {
       chai.request(server)
       .get('/api/v1/foods/1')
       .end((error, response) => {
@@ -117,7 +146,6 @@ describe('API Routes', () => {
         response.body[0].calories.should.equal(105);
         done();
       });
-    });
     
     it('should return 404 if food with given id is not found', done => {
        chai.request(server)
@@ -130,6 +158,7 @@ describe('API Routes', () => {
          done();
        });
      });
+    });
   });
   
   describe('DELETE /api/v1/foods/:id', () => {
@@ -144,6 +173,24 @@ describe('API Routes', () => {
           response.should.have.status(404);
           done();
         });
+      });
+    });
+  });
+  
+  describe('GET /api/v1/meals', () => {
+   it('should return all of the meals', done => {
+      chai.request(server)
+      .get('/api/v1/meals')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(4);
+        response.body[0].should.have.property('type');
+        response.body[0].type.should.equal('Breakfast');
+        response.body[0].should.have.property('goal_calories');
+        response.body[0].calories.should.equal(650);
+        done();
       });
     });
   });
