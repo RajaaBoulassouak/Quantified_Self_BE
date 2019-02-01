@@ -43,7 +43,11 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(201);
         response.body.should.be.a('object');
-        // response.body.should.have.property('id');
+        response.body.food[0].should.have.property('id');
+        response.body.food[0].should.have.property('title');
+        // response.body[0].title.should.equal('Orange');
+        response.body.food[0].should.have.property('calories');
+        response.body.food[0].calories.should.equal(45);
         done();
       });
     });
@@ -63,7 +67,7 @@ describe('API Routes', () => {
       done();
     });
   });
-  
+
   describe('PATCH /api/v1/foods/:id', () => {
     it('it should UPDATE a food given the id', (done) => {
       chai.request(server)

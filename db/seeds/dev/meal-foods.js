@@ -1,8 +1,8 @@
 exports.seed = function(knex, Promise) {
-  return knex('meal_foods').del() 
+  return knex('meal-foods').del() 
   .then(() => {
     return Promise.all([
-      knex('meal_foods').insert([
+      knex('meal-foods').insert([
         { id: 1, meal_id: 1, food_id: 1 },
         { id: 2, meal_id: 1, food_id: 2 },
         { id: 3, meal_id: 2, food_id: 1 },

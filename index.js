@@ -14,7 +14,7 @@ app.post('/api/v1/foods', (request, response) => {
   const food = request.body;
   for (let requiredParameter of ['title', 'calories']) {
     if (!food[requiredParameter]) {
-      response.status(400).send({ 
+      return response.status(400).send({ 
         error: `Expected format: { title: <String>, calories: <Integer> }. You're missing a "${requiredParameter}" property.` 
       });
     }
@@ -32,7 +32,7 @@ app.patch('/api/v1/foods/:id', (request, response) => {
   const food = request.body;
   for (let requiredParameter of ['title', 'calories']) {
     if (!food[requiredParameter]) {
-      response.status(400).send({ 
+      return response.status(400).send({ 
         error: `Expected format: { title: <String>, calories: <Integer> }. You're missing a "${requiredParameter}" property.` 
       });
     }
