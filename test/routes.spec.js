@@ -60,7 +60,7 @@ describe('API Routes', () => {
       title: 'Orange',
     })
     .end((error, response) => {
-      response.should.have.status(400);
+      response.should.have.status(422);
       response.body.error.should.equal(
         `Expected format: { title: <String>, calories: <Integer> }. You're missing a "calories" property.`
       );
@@ -95,7 +95,7 @@ describe('API Routes', () => {
       calories: 45
     })
     .end((error, response) => {
-      response.should.have.status(400);
+      response.should.have.status(422);
       response.body.error.should.equal(
         `Expected format: { title: <String>, calories: <Integer> }. You're missing a "title" property.`
       );
