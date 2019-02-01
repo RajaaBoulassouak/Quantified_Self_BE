@@ -14,9 +14,9 @@ app.post('/api/v1/foods', (request, response) => {
   const food = request.body;
   for (let requiredParameter of ['title', 'calories']) {
     if (!food[requiredParameter]) {
-      return response
-      .status(400)
-      .send({ error: `Expected format: { title: <String>, calories: <Integer> }. You're missing a "${requiredParameter}" property.` });
+      response.status(400).send({ 
+        error: `Expected format: { title: <String>, calories: <Integer> }. You're missing a "${requiredParameter}" property.` 
+      });
     }
   }                           
   database('foods').insert(food, '*')
@@ -32,12 +32,17 @@ app.patch('/api/v1/foods/:id', (request, response) => {
   const food = request.body;
   for (let requiredParameter of ['title', 'calories']) {
     if (!food[requiredParameter]) {
-      response.status(400).send({ error: `Expected format: { title: <String>, calories: <Integer> }. You're missing a "${requiredParameter}" property.` });
+      response.status(400).send({ 
+        error: `Expected format: { title: <String>, calories: <Integer> }. You're missing a "${requiredParameter}" property.` 
+      });
     }
   } 
-  database('foods').where('id', request.params.id).update({title: food.title, calories: food.calories}, '*')
+  database('foods').where('id', request.params.id)
+  .update({title: food.title, calories: food.calories}, '*')
   .then(food => {
-    response.status(200).json({message: 'Food updated!', food});
+    response.status(200).json({
+      message: 'Food updated!', food
+    });
   })
   .catch((error) => {
     response.status(500).json({ error });
@@ -56,16 +61,18 @@ app.get('/api/v1/foods', (request, response) => {
 
 app.get('/api/v1/foods/:id', (request, response) => {
   database('foods').where('id', request.params.id).select()
-    .then(foods => {
-      if (foods.length) {
-        response.status(200).json(foods);
-      } else {
-        response.status(404).json({ error: `Could not find food with id ${request.params.id}` });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  .then(foods => {
+    if (foods.length) {
+      response.status(200).json(foods);
+    } else {
+      response.status(404).json({ 
+        error: `Could not find food with id ${request.params.id}` 
+      });
+    }
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
 });
 
 app.delete('/api/v1/foods/:id', (request, response) => {
