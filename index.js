@@ -117,7 +117,6 @@ app.get('/api/v1/meals/:id/foods', (request, response) => {
     foods.forEach( (meal_food) => {
       meal_foods.push({'title': meal_food.title, 'calories': meal_food.calories})
     });
-    
     if (foods.length) {
       response.status(200).json({
         'id': request.params.id, 
@@ -137,8 +136,6 @@ app.get('/api/v1/meals/:id/foods', (request, response) => {
     response.status(500).json({ error });
   });
 });
-
-
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
