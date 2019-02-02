@@ -45,7 +45,7 @@ app.patch('/api/v1/foods/:id', (request, response) => {
     });
   })
   .catch((error) => {
-    response.status(400).json({ error });
+    response.status(400).json({ error: 'Could not update food' });
   });
 });      
 
