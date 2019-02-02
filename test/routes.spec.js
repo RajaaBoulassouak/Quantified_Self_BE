@@ -45,7 +45,7 @@ describe('API Routes', () => {
         response.body.should.be.a('object');
         response.body.food[0].should.have.property('id');
         response.body.food[0].should.have.property('title');
-        // response.body[0].title.should.equal('Orange');
+        response.body.food[0].title.should.equal('Orange');
         response.body.food[0].should.have.property('calories');
         response.body.food[0].calories.should.equal(45);
         done();
@@ -67,7 +67,7 @@ describe('API Routes', () => {
       done();
     });
   });
-
+  
   describe('PATCH /api/v1/foods/:id', () => {
     it('it should UPDATE a food given the id', (done) => {
       chai.request(server)
@@ -138,7 +138,7 @@ describe('API Routes', () => {
       });
     });
   });
-    
+  
   it('should return 404 if food with given id is not found', done => {
     chai.request(server)
     .get('/api/v1/foods/3')
@@ -150,7 +150,6 @@ describe('API Routes', () => {
      done();
     });
   });
-
   
   describe('DELETE /api/v1/foods/:id', () => {
     it('it should DELETE a food given the id', (done) => {
@@ -181,6 +180,43 @@ describe('API Routes', () => {
         response.body[0].type.should.equal('Breakfast');
         response.body[0].should.have.property('goal_calories');
         response.body[0].goal_calories.should.equal(650);
+        done();
+      });
+    });
+  });
+  
+  describe('GET /api/v1/meals/:meal_id/foods', () => {
+    it('should return a meal and the foods associated with it given the meal id', done => {
+      chai.request(server)
+      .get('/api/v1/meals/1/foods')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.have.property('id');
+        response.body.id.should.equal('1');
+        response.body.should.have.property('meal_type');
+        response.body.meal_type.should.equal('Breakfast');
+        response.body.should.have.property('foods');
+        response.body.foods.should.be.a('array');
+        response.body.foods.length.should.equal(2);
+        response.body.foods[0].should.have.property('title');
+        response.body.foods[0].title.should.equal('Banana');
+        response.body.foods[0].should.have.property('calories');
+        response.body.foods[0].calories.should.equal(105);
+        done();
+      });
+    });
+  });
+  
+  describe('GET /api/v1/meals/:meal_id/foods', () => {
+    it('should return 404 if food with given id is not found', done => {
+      chai.request(server)
+      .get('/api/v1/meals/100/foods')
+      .end((error, response) => {
+        response.should.have.status(404);
+        response.should.be.json;
+        response.body.should.have.property('error');
+        response.body.error.should.equal('Could not find food with id 100');
         done();
       });
     });
