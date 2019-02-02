@@ -193,12 +193,14 @@ describe('API Routes', () => {
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.have.property('id');
-        response.body.id.should.equal('1');
+        response.body.id.should.equal(1);
         response.body.should.have.property('meal_type');
         response.body.meal_type.should.equal('Breakfast');
         response.body.should.have.property('foods');
         response.body.foods.should.be.a('array');
         response.body.foods.length.should.equal(2);
+        response.body.foods[0].should.have.property('id');
+        response.body.foods[0].id.should.equal(1);
         response.body.foods[0].should.have.property('title');
         response.body.foods[0].title.should.equal('Banana');
         response.body.foods[0].should.have.property('calories');
