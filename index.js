@@ -100,9 +100,9 @@ app.get('/api/v1/meals', (request, response) => {
   });
 });
 
-app.get('/api/v1/meals/:id/foods', (request, response) => {
+app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   database('meals')
-  .where('meals.id', request.params.id)
+  .where('meals.id', request.params.meal_id)
   .join('meal_foods', 'meal_foods.meal_id', '=', 'meals.id')
   .join('foods', 'meal_foods.food_id', '=', 'foods.id')
   .select('*')
@@ -117,7 +117,7 @@ app.get('/api/v1/meals/:id/foods', (request, response) => {
     });
     if (foods.length) {
       response.status(200).json({
-        'id': request.params.id, 
+        'id': request.params.meal_id, 
         'meal_type': type,
         'goal_calories': foods[0].goal_calories,
         'created_at': created_at,
