@@ -99,6 +99,9 @@ app.get('/api/v1/meals', (request, response) => {
   });
 });
 
+.join('foods', 'meal_foods.food_id', '=', 'foods.id')
+ .join('meals', 'meal_foods.meal_id', '=', 'meals.id')
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
