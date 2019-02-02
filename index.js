@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
+const pry = require('pryjs')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -132,6 +133,34 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   })
   .catch(error => {
     response.status(500).json({ error });
+  });
+});   
+
+app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {  
+  database('meals').where('meals.id', request.params.meal_id).select()
+  .then(meal => {
+    if (!meal.length) {
+      response.status(404).json({ 
+        error: `Could not find meal with id ${request.params.meal_id}` 
+      });
+    }
+  });
+  database('foods').where('foods.id', request.params.id).select()
+  .then(food => {
+    if (!food.length) {
+      response.status(404).json({ 
+        error: `Could not find food with id ${request.params.id}` 
+      });
+    }
+  }) 
+  database('meal_foods').insert({meal_id: request.params.meal_id, food_id: request.params.id}, '*')
+    .then(meal_foods => {
+      response.status(201).json({ 
+        "message": `Successfully added food ${meal_foods[0].food_id} to meal ${meal_foods[0].meal_id}` 
+      })
+    })                     
+  .catch(error => {
+    response.status(400).json({ error });
   });
 });
 
