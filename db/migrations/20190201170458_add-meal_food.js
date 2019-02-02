@@ -3,9 +3,9 @@ exports.up = function(knex, Promise) {
     knex.schema.createTable('meal_foods', function(table) {
       table.increments('id').primary();
       table.integer('meal_id').unsigned()
-      table.foreign('meal_id').references('meals.id');
+      table.foreign('meal_id').references('meals.id').onDelete('CASCADE');
       table.integer('food_id').unsigned()
-      table.foreign('food_id').references('foods.id');
+      table.foreign('food_id').references('foods.id').onDelete('CASCADE');
 
       table.timestamps(true, true);
     }),
