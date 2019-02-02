@@ -107,15 +107,15 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   .join('foods', 'meal_foods.food_id', '=', 'foods.id')
   .select('*')
   .then(foods => {
-    let type = foods[0].type;
-    let goal_calories = foods[0].goal_calories;
-    let created_at = foods[0].created_at;
-    let updated_at = foods[0].updated_at;
-    let meal_foods = [];
-    foods.forEach( (meal_food) => {
-      meal_foods.push({'title': meal_food.title, 'calories': meal_food.calories})
-    });
     if (foods.length) {
+      let type = foods[0].type;
+      let goal_calories = foods[0].goal_calories;
+      let created_at = foods[0].created_at;
+      let updated_at = foods[0].updated_at;
+      let meal_foods = [];
+      foods.forEach( (meal_food) => {
+        meal_foods.push({'title': meal_food.title, 'calories': meal_food.calories})
+      });
       response.status(200).json({
         'id': request.params.meal_id, 
         'meal_type': type,
@@ -126,7 +126,7 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
       })
     } else {
       response.status(404).json({ 
-        error: `Could not find food with id ${request.params.id}` 
+        error: `Could not find food with id ${request.params.meal_id}` 
       });
     }
   })
@@ -134,6 +134,7 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
     response.status(500).json({ error });
   });
 });
+
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
