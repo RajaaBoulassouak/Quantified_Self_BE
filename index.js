@@ -114,10 +114,10 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
       let updated_at = foods[0].updated_at;
       let meal_foods = [];
       foods.forEach( (meal_food) => {
-        meal_foods.push({'title': meal_food.title, 'calories': meal_food.calories})
+        meal_foods.push({'id': meal_food.food_id, 'title': meal_food.title, 'calories': meal_food.calories})
       });
       response.status(200).json({
-        'id': request.params.meal_id, 
+        'id': parseInt(request.params.meal_id), 
         'meal_type': type,
         'goal_calories': foods[0].goal_calories,
         'created_at': created_at,
@@ -134,7 +134,6 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
     response.status(500).json({ error });
   });
 });
-
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
