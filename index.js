@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Quantified-Self-BE';
 
+
 app.post('/api/v1/foods', (request, response) => {
   const food = request.body;
   for (let requiredParameter of ['title', 'calories']) {
@@ -31,6 +32,7 @@ app.post('/api/v1/foods', (request, response) => {
     });
   });
 });
+
 
 app.patch('/api/v1/foods/:id', (request, response) => {
   const food = request.body;
@@ -59,6 +61,7 @@ app.patch('/api/v1/foods/:id', (request, response) => {
   });
 });      
 
+
 app.get('/api/v1/foods', (request, response) => {
   database('foods')
   .select()
@@ -71,6 +74,7 @@ app.get('/api/v1/foods', (request, response) => {
     });
   });
 });
+
 
 app.get('/api/v1/foods/:id', (request, response) => {
   database('foods')
@@ -92,7 +96,18 @@ app.get('/api/v1/foods/:id', (request, response) => {
   });
 });
 
+
 app.delete('/api/v1/foods/:id', (request, response) => {
+  database('foods')
+  .where('id', request.params.id)
+  .select()
+  .then(foods => {
+    if (!foods.length) {
+      return response.status(404).json({ 
+        error: `Could not find food with id ${request.params.id}` 
+      });
+    } 
+  })
   database('foods')
   .where('id', request.params.id)
   .delete()
@@ -101,16 +116,15 @@ app.delete('/api/v1/foods/:id', (request, response) => {
       response.status(204).json({ 
         success: true 
       });
-    } else {
-      response.status(404).json({ error });
-      }
-    })
+    }
+  })
   .catch((error) => {
     response.status(500).json({ 
       error: 'Something went wrong' 
     });
   });
 });
+
 
 app.get('/api/v1/meals', (request, response) => {
   database('meals')
@@ -122,6 +136,7 @@ app.get('/api/v1/meals', (request, response) => {
     response.status(500).json({ error });
   });
 });
+
 
 app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   database('meals')
@@ -163,6 +178,7 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
     });
   });
 });   
+
 
 app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {  
   database('meals')
@@ -210,6 +226,32 @@ app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
     });
   });
 });
+
+
+// app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
+//   database('meal_foods')
+//   .where('meals.id', request.params.meal_id)
+//   .where('foods.id', request.params.id)
+//   .join('meals', 'meal_foods.meal_id', '=', 'meals.id')
+//   .join('foods', 'meal_foods.food_id', '=', 'foods.id')
+//   .select('*')
+//   .limit(1)
+//   .delete()
+//   .then(foods => {
+//     if (foods == 1) {
+//       response.status(204).json({ 
+//         success: true 
+//       });
+//     } else {
+//       response.status(404).json({ error });
+//       }
+//     })
+//   .catch((error) => {
+//     response.status(500).json({ 
+//       error: 'Something went wrong' 
+//     });
+//   });
+// });
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
