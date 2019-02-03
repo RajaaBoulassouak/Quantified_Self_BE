@@ -237,4 +237,22 @@ describe('API Routes', () => {
       });
     });
   });
+  
+  it('should return 404 if MEAL with given id is not found', done => {
+    chai.request(server)
+    .get('/api/v1/meals/100/foods/1')
+    .end((error, response) => {
+     response.should.have.status(404);
+     done();
+    });
+  });
+  
+  it('should return 404 if FOOD with given id is not found', done => {
+    chai.request(server)
+    .get('/api/v1/meals/1/foods/100')
+    .end((error, response) => {
+     response.should.have.status(404);
+     done();
+    });
+  });
 });
