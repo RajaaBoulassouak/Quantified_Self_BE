@@ -141,12 +141,12 @@ describe('API Routes', () => {
   
   it('should return 404 if food with given id is not found', done => {
     chai.request(server)
-    .get('/api/v1/foods/3')
+    .get('/api/v1/foods/100')
     .end((error, response) => {
      response.should.have.status(404);
      response.should.be.json;
      response.body.should.have.property('error');
-     response.body.error.should.equal('Could not find food with id 3');
+     response.body.error.should.equal('Could not find food with id 100');
      done();
     });
   });
@@ -219,6 +219,20 @@ describe('API Routes', () => {
         response.should.be.json;
         response.body.should.have.property('error');
         response.body.error.should.equal('Could not find food with id 100');
+        done();
+      });
+    });
+  });
+  
+  describe('POST /api/v1/meals/:meal_id/foods/:id', () => {
+    it('should add a food to a meal given their ids', done => {
+      chai.request(server)
+      .post('/api/v1/meals/1/foods/1')
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.should.be.json;
+        response.body.should.have.property('message');
+        response.body.message.should.equal('Successfully added Banana to Breakfast');
         done();
       });
     });
