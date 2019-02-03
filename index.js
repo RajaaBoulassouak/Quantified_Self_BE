@@ -260,8 +260,8 @@ app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
       .delete()
       .then(meal_foods => {
         if (!meal_foods.length) {
-          response.status(204).json({ 
-            success: true 
+          response.status(200).json({ 
+            message: 'Successfully removed FOODNAME to MEALNAME'
           });
         }
       })

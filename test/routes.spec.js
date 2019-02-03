@@ -261,7 +261,10 @@ describe('API Routes', () => {
       chai.request(server)
       .delete('/api/v1/meals/1/foods/1')
       .end((error, response) => {
-        response.should.have.status(204);
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.have.property('message');
+        response.body.message.should.equal('Successfully removed FOODNAME to MEALNAME');
         done();
       });
     });
