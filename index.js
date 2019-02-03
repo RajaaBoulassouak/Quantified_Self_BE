@@ -130,7 +130,11 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   .join('foods', 'meal_foods.food_id', '=', 'foods.id')
   .select('*')
   .then(foods => {
-    if (foods.length) {
+    if (!foods.length) {
+      response.status(404).json({ 
+        error: `Could not find food with id ${request.params.meal_id}` 
+      });
+    } else {
       let type = foods[0].type;
       let goal_calories = foods[0].goal_calories;
       let created_at = foods[0].created_at;
@@ -151,10 +155,6 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
         'updated_at': updated_at,
         'foods': meal_foods
       })
-    } else {
-      response.status(404).json({ 
-        error: `Could not find food with id ${request.params.meal_id}` 
-      });
     }
   })
   .catch(error => {
@@ -178,7 +178,7 @@ app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
   database('foods')
   .where('foods.id', request.params.id)
   .select()
-  .then(food => {
+  .then(food => { 
     if (!food.length) {
       return response.status(404).json({ 
         error: `Could not find food with id ${request.params.id}` 
