@@ -137,6 +137,7 @@ app.get('/api/v1/meals', (request, response) => {
   });
 });
 
+
 app.get('/api/v1/meal_foods', (request, response) => {
   database('meal_foods')
   .select('*')
@@ -223,10 +224,9 @@ app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
     .where('foods.id', request.params.id)
     .join('meals', 'meal_foods.meal_id', '=', 'meals.id')
     .join('foods', 'meal_foods.food_id', '=', 'foods.id')
-    .select('*')
-    .limit(1)
+    .select()
     .then(meal_foods => {
-      response.status(201).json({ 
+      response.status(201).json({
         "message": `Successfully added ${meal_foods[0].title} to ${meal_foods[0].type}` 
       })
     }) 
@@ -252,7 +252,11 @@ app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
         error: `Could not find record with meal id  ${request.params.meal_id} and food id ${request.params.id}` 
       });
     } else {
-      meal_foods
+      database('meal_foods')
+      .where('meal_id', request.params.meal_id)
+      .where('food_id', request.params.id)
+      .join('meals', 'meal_foods.meal_id', '=', 'meals.id')
+      .join('foods', 'meal_foods.food_id', '=', 'foods.id')
       .delete()
       .then(meal_foods => {
         if (!meal_foods.length) {

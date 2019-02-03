@@ -255,4 +255,15 @@ describe('API Routes', () => {
      done();
     });
   });
+  
+  describe('DELETE /api/v1/meals/:meal_id/foods/:id', () => {
+    it('should DELETE a FOOD form a MEAL given their IDs', (done) => {
+      chai.request(server)
+      .delete('/api/v1/meals/1/foods/1')
+      .end((error, response) => {
+        response.should.have.status(204);
+        done();
+      });
+    });
+  });
 });
