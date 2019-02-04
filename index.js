@@ -138,18 +138,6 @@ app.get('/api/v1/meals', (request, response) => {
 });
 
 
-// app.get('/api/v1/meal_foods', (request, response) => {
-//   database('meal_foods')
-//   .select('*')
-//   .then((meal_foods) => {
-//     response.status(200).json(meal_foods);
-//   })
-//   .catch((error) => {
-//     response.status(500).json({ error });
-//   });
-// });
-
-
 app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   database('meals')
   .where('meals.id', request.params.meal_id)
