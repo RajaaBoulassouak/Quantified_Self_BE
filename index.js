@@ -138,16 +138,16 @@ app.get('/api/v1/meals', (request, response) => {
 });
 
 
-app.get('/api/v1/meal_foods', (request, response) => {
-  database('meal_foods')
-  .select('*')
-  .then((meal_foods) => {
-    response.status(200).json(meal_foods);
-  })
-  .catch((error) => {
-    response.status(500).json({ error });
-  });
-});
+// app.get('/api/v1/meal_foods', (request, response) => {
+//   database('meal_foods')
+//   .select('*')
+//   .then((meal_foods) => {
+//     response.status(200).json(meal_foods);
+//   })
+//   .catch((error) => {
+//     response.status(500).json({ error });
+//   });
+// });
 
 
 app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
@@ -252,6 +252,8 @@ app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
         error: `Could not find record with meal id  ${request.params.meal_id} and food id ${request.params.id}` 
       });
     } else {
+      let food_title = meal_foods[0].title
+      let meal_type = meal_foods[0].type
       database('meal_foods')
       .where('meal_id', request.params.meal_id)
       .where('food_id', request.params.id)
@@ -261,7 +263,7 @@ app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
       .then(meal_foods => {
         if (!meal_foods.length) {
           response.status(200).json({ 
-            message: 'Successfully removed FOODNAME to MEALNAME'
+            message: `Successfully removed ${food_title} from ${meal_type}`
           });
         }
       })
