@@ -249,7 +249,7 @@ app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
   .then(meal_foods => {
     if (!meal_foods.length) {
       return response.status(404).json({ 
-        error: `Could not find record with meal id  ${request.params.meal_id} and food id ${request.params.id}` 
+        error: `Could not find record with meal id ${request.params.meal_id} and food id ${request.params.id}` 
       });
     } else {
       let food_title = meal_foods[0].title

@@ -289,10 +289,23 @@ describe('API Routes', () => {
           response.should.have.status(404);
           response.should.be.json;
           response.body.should.have.property('error');
-          response.body.error.should.equal('Could not find record with meal id  1 and food id 1');
+          response.body.error.should.equal('Could not find record with meal id 1 and food id 1');
           done();
         });
       });
     });
+    
+    it('should return 404 if MEAL with given id is not found', done => {
+      chai.request(server)
+      .delete('/api/v1/meals/100/foods/1')
+      .end((error, response) => {
+       response.should.have.status(404);
+       response.should.be.json;
+       response.body.should.have.property('error');
+       response.body.error.should.equal('Could not find record with meal id 100 and food id 1');
+       done();
+      });
+    });
+    
   });
 });
