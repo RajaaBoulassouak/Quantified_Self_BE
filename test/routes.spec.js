@@ -79,13 +79,9 @@ describe('API Routes', () => {
         response.should.have.status(200);
         response.body.should.have.property('message');
         response.body.message.should.equal('Food updated!');
-        chai.request(server)
-        .get('/api/v1/foods/1')
-        .end((error, response) => {
-          response.body[0].title.should.equal('Orange');
-          response.body[0].calories.should.equal(45);
-          done();
-        });
+        response.body.food[0].title.should.equal('Orange');
+        response.body.food[0].calories.should.equal(45);
+        done();
       });
     });
   
@@ -161,7 +157,10 @@ describe('API Routes', () => {
       chai.request(server)
       .delete('/api/v1/foods/1')
       .end((error, response) => {
-        response.should.have.status(204);
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.have.property('message');
+        response.body.message.should.equal('Successfully removed food with id 1');
         chai.request(server)
         .get('/api/v1/foods/1')
         .end((error, response) => {

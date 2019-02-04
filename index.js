@@ -113,8 +113,8 @@ app.delete('/api/v1/foods/:id', (request, response) => {
   .delete()
   .then(foods => {
     if (foods == 1) {
-      response.status(204).json({ 
-        success: true 
+      response.status(200).json({ 
+        message: `Successfully removed food with id ${request.params.id}` 
       });
     }
   })
