@@ -159,7 +159,7 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   .then(foods => {
     if (!foods.length) {
       response.status(404).json({ 
-        error: `Could not find food with id ${request.params.meal_id}` 
+        error: `Could not find meal with id ${request.params.meal_id}` 
       });
     } else {
       let type = foods[0].type;
