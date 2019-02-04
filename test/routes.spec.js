@@ -33,7 +33,7 @@ describe('API Routes', () => {
   });
   
   describe('POST /api/v1/foods', () => {
-    it('should create a new food', done => {
+    it('should CREATE a new food', done => {
       chai.request(server)
       .post('/api/v1/foods')
       .send({
@@ -53,7 +53,7 @@ describe('API Routes', () => {
     });
   });
   
-  it('should not create a record with missing attribute', done => {
+  it('should NOT CREATE a record if missing any of the attributes', done => {
     chai.request(server)
     .post('/api/v1/foods')
     .send({
@@ -69,7 +69,7 @@ describe('API Routes', () => {
   });
   
   describe('PATCH /api/v1/foods/:id', () => {
-    it('it should UPDATE a food given the id', (done) => {
+    it('should UPDATE a food given the id', (done) => {
       chai.request(server)
       .patch('/api/v1/foods/1')
       .send({ title: 'Orange', calories: 45 })
@@ -88,7 +88,7 @@ describe('API Routes', () => {
     });
   });
   
-  it('should not update a record with missing attribute', done => {
+  it('should NOT UPDATE a record if missing any of the attributes', done => {
     chai.request(server)
     .patch('/api/v1/foods/1')
     .send({
@@ -104,7 +104,7 @@ describe('API Routes', () => {
   });
   
   describe('GET /api/v1/foods', () => {
-   it('should return all of the foods', done => {
+   it('should return ALL of the foods', done => {
       chai.request(server)
       .get('/api/v1/foods')
       .end((error, response) => {
@@ -122,7 +122,7 @@ describe('API Routes', () => {
   });
   
   describe('GET /api/v1/foods/:id', () => {
-    it('should return a food given the id', done => {
+    it('should return A FOOD given the id', done => {
       chai.request(server)
       .get('/api/v1/foods/1')
       .end((error, response) => {
@@ -141,18 +141,18 @@ describe('API Routes', () => {
   
   it('should return 404 if food with given id is not found', done => {
     chai.request(server)
-    .get('/api/v1/foods/3')
+    .get('/api/v1/foods/100')
     .end((error, response) => {
      response.should.have.status(404);
      response.should.be.json;
      response.body.should.have.property('error');
-     response.body.error.should.equal('Could not find food with id 3');
+     response.body.error.should.equal('Could not find food with id 100');
      done();
     });
   });
   
   describe('DELETE /api/v1/foods/:id', () => {
-    it('it should DELETE a food given the id', (done) => {
+    it('should DELETE a food given the id', (done) => {
       chai.request(server)
       .delete('/api/v1/foods/1')
       .end((error, response) => {
@@ -168,7 +168,7 @@ describe('API Routes', () => {
   });
   
   describe('GET /api/v1/meals', () => {
-   it('should return all of the meals', done => {
+   it('should return ALL of the meals', done => {
       chai.request(server)
       .get('/api/v1/meals')
       .end((error, response) => {
@@ -186,19 +186,21 @@ describe('API Routes', () => {
   });
   
   describe('GET /api/v1/meals/:meal_id/foods', () => {
-    it('should return a meal and the foods associated with it given the meal id', done => {
+    it('should return A MEAL and its associated FOODS given the meal id', done => {
       chai.request(server)
       .get('/api/v1/meals/1/foods')
       .end((error, response) => {
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.have.property('id');
-        response.body.id.should.equal('1');
+        response.body.id.should.equal(1);
         response.body.should.have.property('meal_type');
         response.body.meal_type.should.equal('Breakfast');
         response.body.should.have.property('foods');
         response.body.foods.should.be.a('array');
         response.body.foods.length.should.equal(2);
+        response.body.foods[0].should.have.property('id');
+        response.body.foods[0].id.should.equal(1);
         response.body.foods[0].should.have.property('title');
         response.body.foods[0].title.should.equal('Banana');
         response.body.foods[0].should.have.property('calories');
@@ -209,7 +211,7 @@ describe('API Routes', () => {
   });
   
   describe('GET /api/v1/meals/:meal_id/foods', () => {
-    it('should return 404 if food with given id is not found', done => {
+    it('should return 404 if meal with given id is not found', done => {
       chai.request(server)
       .get('/api/v1/meals/100/foods')
       .end((error, response) => {
@@ -219,6 +221,38 @@ describe('API Routes', () => {
         response.body.error.should.equal('Could not find food with id 100');
         done();
       });
+    });
+  });
+  
+  describe('POST /api/v1/meals/:meal_id/foods/:id', () => {
+    it('should ADD A FOOD to A MEAL given their ids', done => {
+      chai.request(server)
+      .post('/api/v1/meals/1/foods/1')
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.should.be.json;
+        response.body.should.have.property('message');
+        response.body.message.should.equal('Successfully added Banana to Breakfast');
+        done();
+      });
+    });
+  });
+  
+  it('should return 404 if MEAL with given id is not found', done => {
+    chai.request(server)
+    .get('/api/v1/meals/100/foods/1')
+    .end((error, response) => {
+     response.should.have.status(404);
+     done();
+    });
+  });
+  
+  it('should return 404 if FOOD with given id is not found', done => {
+    chai.request(server)
+    .get('/api/v1/meals/1/foods/100')
+    .end((error, response) => {
+     response.should.have.status(404);
+     done();
     });
   });
 });
