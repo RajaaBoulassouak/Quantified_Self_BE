@@ -157,10 +157,7 @@ describe('API Routes', () => {
       chai.request(server)
       .delete('/api/v1/foods/1')
       .end((error, response) => {
-        response.should.have.status(200);
-        response.should.be.json;
-        response.body.should.have.property('message');
-        response.body.message.should.equal('Successfully removed food with id 1');
+        response.should.have.status(204);
         chai.request(server)
         .get('/api/v1/foods/1')
         .end((error, response) => {
