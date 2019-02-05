@@ -114,9 +114,39 @@ app.delete('/api/v1/foods/:id', (request, response) => {
 
 app.get('/api/v1/meals', (request, response) => {
   database('meals')
+  .join('meal_foods', 'meal_foods.meal_id', '=', 'meals.id')
+  .join('foods', 'meal_foods.food_id', '=', 'foods.id')
   .select('*')
   .then((meals) => {
-    response.status(200).json(meals);
+    let all_meals = []
+    meals.forEach( (meal) => {
+      let foods = []
+      foods.push({
+          'id': meal.food_id, 
+          'title': meal.title, 
+          'calories': meal.calories 
+      })
+      all_meals.push({ 
+        'id': meal.meal_id,
+        'type': meal.type,
+        'goal_calories': meal.goal_calories,
+        'foods': foods
+      })
+    });
+    // var output = [];
+    // all_meals.forEach((meal) => {
+    //   var mergedMeal = output.filter((value, index) => {
+    //     return value.id == item.id; value.type == item.type; value.goal_calories == item.goal_calories;
+    //   });
+    //   if (mergedMeal.length) {
+    //     var mergedMealIndex = output.indexOf(mergedMeal[0]);
+    //     output[mergedMealIndex].value = output[mergedMealIndex].value.concat(item.value);
+    //   } else {
+    //     if (typeof item.value == 'string')
+    //       item.value = [item.value];
+    //     output.push(item);
+    //   }
+    response.status(200).json(all_meals);
   })
   .catch((error) => {
     response.status(500).json({ error });
