@@ -1,20 +1,22 @@
 # Quantified Self Back-End
 
 
-This app is designed to allow tracking the daily calorie consumption by setting calorie goals for the day, via defining goals for each meal!
+This API is built with Express and designed to provide data for consumption by a seperate front-end app that allows the user to tracking their daily calorie consumption by setting calorie goals for the day, via defining goals for each meal!
 
-* [Deployed API on Heroku] (https://protected-retreat-87261.herokuapp.com/)
-* [API Github Repository](https://github.com/RajaaBoulassouak/Quantified_Self_BE)
-* [Deployed App] ()
+* [See the deployed version on Heroku] (https://protected-retreat-87261.herokuapp.com/)
+* [Checkout the Front-End]()
 
 
-## Setup
+## How to Use the API
 1. Fork or clone this repo: `git@github.com:RajaaBoulassouak/Quantified_Self_BE.gi <name of your choice>`
 1. To see the app in action locally: run `node index.js`
 1. Use Postman or the deployed app to hit the availbale the endpoints
 
+## Schema Design
+
 
 ## Available Endpoints
+
 
 
 ## Running Tests
@@ -39,6 +41,7 @@ To contribute, see the setup instructions.
 ## Technical
 
 * [Express](https://expressjs.com/)
+* [PostgreSQL](https://www.postgresql.org//)
 * [JavaScript](https://www.javascript.com/)
 * [Mocha](https://mochajs.org/)
 * [Chai](https://chaijs.com/)
