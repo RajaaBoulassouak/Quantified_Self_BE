@@ -3,7 +3,7 @@
 
 This API is built with Express and designed to provide data for consumption by a seperate front-end app that allows the user to tracking their daily calorie consumption by setting calorie goals for the day, via defining goals for each meal!
 
-* [See the deployed version on Heroku] (https://protected-retreat-87261.herokuapp.com/)
+* [See the deployed version on Heroku](https://protected-retreat-87261.herokuapp.com/)
 * [Checkout the Front-End]()
 
 
