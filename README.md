@@ -126,7 +126,78 @@ This API is built with Express and it's designed to provide data for a seperate 
 * ***GET /api/v1/meals***
 
   This returns all the meals currently in the database along with their associated foods.
-
+  ```
+  [
+    {
+        "id": 1,
+        "type": "Breakfast",
+        "goal_calories": 650,
+        "foods": [
+            {
+                "id": 1,
+                "title": "Banana",
+                "calories": 105
+            },
+            {
+                "id": 2,
+                "title": "Apple",
+                "calories": 95
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "type": "Lunch",
+        "goal_calories": 650,
+        "foods": [
+            {
+                "id": 3,
+                "title": "200g Steak",
+                "calories": 542
+            },
+            {
+                "id": 4,
+                "title": "1 Serving Broccoli",
+                "calories": 50
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "Dinner",
+        "goal_calories": 500,
+        "foods": [
+            {
+                "id": 5,
+                "title": "50g Nuts",
+                "calories": 300
+            },
+            {
+                "id": 6,
+                "title": "100g Cheese",
+                "calories": 200
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "type": "Snack",
+        "goal_calories": 200,
+        "foods": [
+            {
+                "id": 7,
+                "title": "Chicken Soup",
+                "calories": 160
+            },
+            {
+                "id": 8,
+                "title": "Garden Salad",
+                "calories": 500
+            }
+        ]
+    }
+  ]
+  ```
 
 * ***GET /api/v1/meals/:meal_id/foods***
 
