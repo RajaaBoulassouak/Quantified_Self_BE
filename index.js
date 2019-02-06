@@ -127,10 +127,17 @@ app.delete('/api/v1/foods/:id', (request, response) => {
 
 
 app.get('/api/v1/meals', (request, response) => {
-  database('meals')
-  .select('*')
-  .then((meals) => {
-    response.status(200).json(meals);
+    database.raw(
+      `SELECT meals.id, meals.type, meals.goal_calories, array_to_json (array_agg(json_build_object('id', foods.id, 'title', foods.title, 'calories', foods.calories)))
+      AS foods
+      FROM meals
+      JOIN meal_foods ON meal_foods.meal_id = meals.id
+      JOIN foods ON meal_foods.food_id = foods.id
+      GROUP BY meals.id
+      ORDER BY meals.id ASC`
+    )
+    .then((meals) => {
+    response.status(200).json(meals.rows);
   })
   .catch((error) => {
     response.status(500).json({ error });

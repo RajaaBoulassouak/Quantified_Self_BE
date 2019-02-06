@@ -193,7 +193,10 @@ describe('API Routes', () => {
         response.body[0].should.have.property('type');
         response.body[0].type.should.equal('Breakfast');
         response.body[0].should.have.property('goal_calories');
-        response.body[0].goal_calories.should.equal(650);
+        response.body[0].goal_calories.should.equal(650)
+        response.body[0].should.have.property('foods');
+        response.body[0].foods.should.be.a('array');
+        response.body[0].foods.length.should.equal(2);
         done();
       });
     });
