@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const bodyParser = require('body-parser');
 const environment = process.env.NODE_ENV || 'development';
@@ -6,10 +7,20 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 const pry = require('pryjs')
 
+// app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Quantified-Self-BE';
+app.use(function (request, response, next) {
+  response.header("Access-Control-Allow-Origin",
+    "*");
+  response.header("Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept");
+  response.header("Access-Control-Allow-Methods",
+    "GET, POST, PATCH, DELETE, OPTIONS");
+  next();
+});
 
 
 app.post('/api/v1/foods', (request, response) => {
