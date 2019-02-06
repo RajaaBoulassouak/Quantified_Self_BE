@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Quantified-Self-BE';
 
+
 app.post('/api/v1/foods', (request, response) => {
   const food = request.body;
   for (let requiredParameter of ['title', 'calories']) {
@@ -31,6 +32,7 @@ app.post('/api/v1/foods', (request, response) => {
     });
   });
 });
+
 
 app.patch('/api/v1/foods/:id', (request, response) => {
   const food = request.body;
@@ -59,6 +61,7 @@ app.patch('/api/v1/foods/:id', (request, response) => {
   });
 });      
 
+
 app.get('/api/v1/foods', (request, response) => {
   database('foods')
   .select()
@@ -71,6 +74,7 @@ app.get('/api/v1/foods', (request, response) => {
     });
   });
 });
+
 
 app.get('/api/v1/foods/:id', (request, response) => {
   database('foods')
@@ -92,7 +96,18 @@ app.get('/api/v1/foods/:id', (request, response) => {
   });
 });
 
+
 app.delete('/api/v1/foods/:id', (request, response) => {
+  database('foods')
+  .where('id', request.params.id)
+  .select()
+  .then(foods => {
+    if (!foods.length) {
+      return response.status(404).json({ 
+        error: `Could not find food with id ${request.params.id}` 
+      });
+    } 
+  })
   database('foods')
   .where('id', request.params.id)
   .delete()
@@ -101,16 +116,15 @@ app.delete('/api/v1/foods/:id', (request, response) => {
       response.status(204).json({ 
         success: true 
       });
-    } else {
-      response.status(404).json({ error });
-      }
-    })
+    }
+  })
   .catch((error) => {
     response.status(500).json({ 
       error: 'Something went wrong' 
     });
   });
 });
+
 
 app.get('/api/v1/meals', (request, response) => {
   database('meals')
@@ -123,6 +137,7 @@ app.get('/api/v1/meals', (request, response) => {
   });
 });
 
+
 app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   database('meals')
   .where('meals.id', request.params.meal_id)
@@ -132,7 +147,7 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
   .then(foods => {
     if (!foods.length) {
       response.status(404).json({ 
-        error: `Could not find food with id ${request.params.meal_id}` 
+        error: `Could not find meal with id ${request.params.meal_id}` 
       });
     } else {
       let type = foods[0].type;
@@ -163,6 +178,7 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
     });
   });
 });   
+
 
 app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {  
   database('meals')
@@ -196,10 +212,9 @@ app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
     .where('foods.id', request.params.id)
     .join('meals', 'meal_foods.meal_id', '=', 'meals.id')
     .join('foods', 'meal_foods.food_id', '=', 'foods.id')
-    .select('*')
-    .limit(1)
+    .select()
     .then(meal_foods => {
-      response.status(201).json({ 
+      response.status(201).json({
         "message": `Successfully added ${meal_foods[0].title} to ${meal_foods[0].type}` 
       })
     }) 
@@ -210,6 +225,45 @@ app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {
     });
   });
 });
+
+
+app.delete('/api/v1/meals/:meal_id/foods/:id', (request, response) => { 
+  database('meal_foods')
+  .where('meal_id', request.params.meal_id)
+  .where('food_id', request.params.id)
+  .join('meals', 'meal_foods.meal_id', '=', 'meals.id')
+  .join('foods', 'meal_foods.food_id', '=', 'foods.id')
+  .select()
+  .then(meal_foods => {
+    if (!meal_foods.length) {
+      return response.status(404).json({ 
+        error: `Could not find record with meal id ${request.params.meal_id} and food id ${request.params.id}` 
+      });
+    } else {
+      let food_title = meal_foods[0].title
+      let meal_type = meal_foods[0].type
+      database('meal_foods')
+      .where('meal_id', request.params.meal_id)
+      .where('food_id', request.params.id)
+      .join('meals', 'meal_foods.meal_id', '=', 'meals.id')
+      .join('foods', 'meal_foods.food_id', '=', 'foods.id')
+      .delete()
+      .then(meal_foods => {
+        if (!meal_foods.length) {
+          response.status(200).json({ 
+            message: `Successfully removed ${food_title} from ${meal_type}`
+          });
+        }
+      })
+    }
+  })
+  .catch((error) => {
+    response.status(500).json({ 
+      error: 'Something went wrong' 
+    });
+  });
+});
+
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
