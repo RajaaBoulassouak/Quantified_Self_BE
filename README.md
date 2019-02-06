@@ -88,7 +88,7 @@ This API is built with Express and it's designed to provide data for a seperate 
             "created_at": "2019-02-06T01:01:12.112Z",
             "updated_at": "2019-02-06T01:01:12.112Z"
         }
-    ]
+     ]
   }
   ```  
 
@@ -111,7 +111,7 @@ This API is built with Express and it's designed to provide data for a seperate 
             "created_at": "2019-02-06T01:01:12.112Z",
             "updated_at": "2019-02-06T01:01:12.112Z"
         }
-    ]
+     ]
   }
   ```  
   
@@ -128,7 +128,7 @@ This API is built with Express and it's designed to provide data for a seperate 
   This returns all the meals currently in the database along with their associated foods.
   ```
   [
-    {
+     {
         "id": 1,
         "type": "Breakfast",
         "goal_calories": 650,
@@ -144,8 +144,8 @@ This API is built with Express and it's designed to provide data for a seperate 
                 "calories": 95
             }
         ]
-    },
-    {
+     },
+     {
         "id": 2,
         "type": "Lunch",
         "goal_calories": 650,
@@ -161,8 +161,8 @@ This API is built with Express and it's designed to provide data for a seperate 
                 "calories": 50
             }
         ]
-    },
-    {
+     },
+     {
         "id": 3,
         "type": "Dinner",
         "goal_calories": 500,
@@ -178,8 +178,8 @@ This API is built with Express and it's designed to provide data for a seperate 
                 "calories": 200
             }
         ]
-    },
-    {
+     },
+     {
         "id": 4,
         "type": "Snack",
         "goal_calories": 200,
@@ -195,7 +195,7 @@ This API is built with Express and it's designed to provide data for a seperate 
                 "calories": 500
             }
         ]
-    }
+     }
   ]
   ```
 
@@ -220,7 +220,7 @@ This API is built with Express and it's designed to provide data for a seperate 
             "title": "Apple",
             "calories": 95
         }
-     ]
+      ]
    }
   ```
   If no meal with the specific `:meal_id` is found, a 404 status code will be returned.
