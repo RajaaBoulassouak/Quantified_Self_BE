@@ -31,7 +31,7 @@ This API is built with Express and it's designed to provide data for a seperate 
 * POST /api/v1/foods
 
   This allows creating a new food with the parameters:
-  `{ "food": { "title": "Name of food here", "calories": "Calories here as an integer"} }`
+  `{ "food": { "title": "Name of food here", "calories": "Calories here as an integer"} }`  
   Both title and calories are required fields.
   If the food is successfully created, the new food item will be returned. 
   If the food is not successfully created, a 400 status code will be returned. 
