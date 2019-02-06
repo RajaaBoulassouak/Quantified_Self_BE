@@ -21,9 +21,9 @@ This API is built with Express and it's designed to provide data for a seperate 
 
 
 ## Running Tests
-* Sufficient testing is provided 
+Sufficient testing is provided 
 
-to run the test suite `mocha --exit`
+to run the tests execute `mocha --exit`
 
 
 ## How to Contribute
