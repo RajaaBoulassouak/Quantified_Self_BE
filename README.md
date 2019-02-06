@@ -20,6 +20,31 @@ This API is built with Express and it's designed to provide data for a seperate 
 * ***GET /api/v1/foods***
 
   This returns all the foods currently in the database.
+  ```
+  [
+    {
+        "id": 1,
+        "title": "Banana",
+        "calories": 105,
+        "created_at": "2019-02-05T22:45:08.319Z",
+        "updated_at": "2019-02-05T22:45:08.319Z"
+    },
+    {
+        "id": 2,
+        "title": "Apple",
+        "calories": 95,
+        "created_at": "2019-02-05T22:45:08.319Z",
+        "updated_at": "2019-02-05T22:45:08.319Z"
+    },
+    {
+        "id": 3,
+        "title": "200g Steak",
+        "calories": 542,
+        "created_at": "2019-02-05T22:45:08.319Z",
+        "updated_at": "2019-02-05T22:45:08.319Z"
+    }
+  ]
+  ```
   
   
 * ***GET /api/v1/foods/:id***
