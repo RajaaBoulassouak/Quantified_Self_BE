@@ -44,7 +44,7 @@ This API is built with Express and it's designed to provide data for a seperate 
         "updated_at": "2019-02-05T22:45:08.319Z"
     }
   ]
-  ```
+  ```  
   
   
 * ***GET /api/v1/foods/:id***
@@ -67,7 +67,7 @@ This API is built with Express and it's designed to provide data for a seperate 
   {
     "error": "Could not find food with id 100"
   }
-  ```
+  ```  
   
   
 * ***POST /api/v1/foods***
@@ -79,6 +79,7 @@ This API is built with Express and it's designed to provide data for a seperate 
   If the food is not successfully created, a 400 status code will be returned.  
    ```
   {
+    "message": "Food successfully created",
     "food": [
         {
             "id": 9,
@@ -89,8 +90,8 @@ This API is built with Express and it's designed to provide data for a seperate 
         }
     ]
   }
-  ```
-  
+  ```  
+
   
 * ***PATCH /api/v1/foods/:id***
 
@@ -101,7 +102,7 @@ This API is built with Express and it's designed to provide data for a seperate 
   If the food is not successfully updated, a 400 status code will be returned.  
   ```
   {
-    "message": "Food updated!",
+    "message": "Food successfully updated!",
     "food": [
         {
             "id": 9,
@@ -112,7 +113,7 @@ This API is built with Express and it's designed to provide data for a seperate 
         }
     ]
   }
-  ```
+  ```  
   
   
 * ***DELETE /api/v1/foods/:id***
@@ -154,9 +155,9 @@ This API is built with Express and it's designed to provide data for a seperate 
   If no meal with the specific `:meal_id` is found, a 404 status code will be returned.
   ```
   {
-    "error": "Could not meal food with id 100"
+    "error": "Could not find meal with id 100"
   }
-  ```
+  ```  
   
   
 * ***POST /api/v1/meals/:meal_id/foods/:id***
@@ -167,7 +168,7 @@ This API is built with Express and it's designed to provide data for a seperate 
   {
     "message": "Successfully added Mango to Breakfast"
   }
-  ```
+  ```  
   
   If no meal with the specific `:meal_id` or no food with the specific `:id` are found, a 404 status code will be returned.
   ```
@@ -186,9 +187,22 @@ This API is built with Express and it's designed to provide data for a seperate 
 
   This deletes the existing record in the MealFoods table that creates the relationship between the food with the `:id` and     the meal with the `meal_id`.  
   If the food is successfully removed from the meal, a 200 status code will be returned.  
+  ```
+  {
+    "message": "Successfully removed Mango from Breakfast"
+  }
+  ```  
   If no meal with the specific `:meal_id` or no food with the specific `:id` are found, a 404 status code will be returned.
-
-
+  ```
+  {
+    "error": "Could not find meal with id 50"
+  }
+  ```
+  ```
+  {
+    "error": "Could not find food with id 50"
+  }
+  ```  
 
 ## Running Tests
 Sufficient testing is provided 
