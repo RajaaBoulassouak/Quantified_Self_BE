@@ -50,7 +50,24 @@ This API is built with Express and it's designed to provide data for a seperate 
 * ***GET /api/v1/foods/:id***
 
   This returns the food object with the passed in `:id`.  
+  ```
+  [
+    {
+        "id": 1,
+        "title": "Banana",
+        "calories": 105,
+        "created_at": "2019-02-05T23:05:51.461Z",
+        "updated_at": "2019-02-05T23:05:51.461Z"
+    }
+  ]
+  ```
+ 
   If no food with the specific `:id` is found, a 404 status code will be returned.
+  ```
+  {
+    "error": "Could not find food with id 100"
+  }
+  ```
   
   
 * ***POST /api/v1/foods***
@@ -60,6 +77,19 @@ This API is built with Express and it's designed to provide data for a seperate 
   Both title and calories are required fields.  
   If the food is successfully created, the new food item will be returned.  
   If the food is not successfully created, a 400 status code will be returned.  
+   ```
+  {
+    "food": [
+        {
+            "id": 9,
+            "title": "Acocado",
+            "calories": 235,
+            "created_at": "2019-02-06T01:01:12.112Z",
+            "updated_at": "2019-02-06T01:01:12.112Z"
+        }
+    ]
+  }
+  ```
   
   
 * ***PATCH /api/v1/foods/:id***
@@ -69,6 +99,20 @@ This API is built with Express and it's designed to provide data for a seperate 
   Both title and calories are required fields.  
   If the food is successfully updated, the updated food item will be returned.  
   If the food is not successfully updated, a 400 status code will be returned.  
+  ```
+  {
+    "message": "Food updated!",
+    "food": [
+        {
+            "id": 9,
+            "title": "Mango",
+            "calories": 200,
+            "created_at": "2019-02-06T01:01:12.112Z",
+            "updated_at": "2019-02-06T01:01:12.112Z"
+        }
+    ]
+  }
+  ```
   
   
 * ***DELETE /api/v1/foods/:id***
@@ -78,21 +122,65 @@ This API is built with Express and it's designed to provide data for a seperate 
   If no food with the specific `:id` is found, a 404 status code will be returned.  
   
   
-  
 * ***GET /api/v1/meals***
 
   This returns all the meals currently in the database along with their associated foods.
 
+
 * ***GET /api/v1/meals/:meal_id/foods***
   
   This returns all the foods associated with the meal with the passed in `:meal_id`.  
+   ```
+   {
+    "id": 1,
+    "meal_type": "Breakfast",
+    "goal_calories": 650,
+    "created_at": "2019-02-05T23:05:51.461Z",
+    "updated_at": "2019-02-05T23:05:51.461Z",
+    "foods": [
+        {
+            "id": 1,
+            "title": "Banana",
+            "calories": 105
+        },
+        {
+            "id": 2,
+            "title": "Apple",
+            "calories": 95
+        }
+     ]
+   }
+  ```
   If no meal with the specific `:meal_id` is found, a 404 status code will be returned.
+  ```
+  {
+    "error": "Could not meal food with id 100"
+  }
+  ```
+  
   
 * ***POST /api/v1/meals/:meal_id/foods/:id***
 
   This allows adding the food with `:id` to the meal with `:meal_id` by creating a new record in the MealFoods table to         establish the relationship between the food and the meal.  
-  If the food is successfully added to the meal, a 201 status code will be returned.  
+  If the food is successfully added to the meal, a 201 status code will be returned.
+  ```
+  {
+    "message": "Successfully added Mango to Breakfast"
+  }
+  ```
+  
   If no meal with the specific `:meal_id` or no food with the specific `:id` are found, a 404 status code will be returned.
+  ```
+  {
+    "error": "Could not find meal with id 50"
+  }
+  ```
+  ```
+  {
+    "error": "Could not find food with id 50"
+  }
+  ```
+
 
 * ***DELETE /api/v1/meals/:meal_id/foods/:id***
 
