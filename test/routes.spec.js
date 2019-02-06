@@ -110,7 +110,7 @@ describe('API Routes', () => {
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a('array');
-        response.body.length.should.equal(2);
+        response.body.length.should.equal(8);
         response.body[0].should.have.property('title');
         response.body[0].title.should.equal('Banana');
         response.body[0].should.have.property('calories');
