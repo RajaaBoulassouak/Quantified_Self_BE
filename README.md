@@ -16,7 +16,7 @@ This API is built with Express and it's designed to provide data for a seperate 
 ## Schema Design
 
 
-## Available Endpoints
+## Available Endpoints  
 * ***GET /api/v1/foods***
   This returns all the foods currently in the database.
   ```
