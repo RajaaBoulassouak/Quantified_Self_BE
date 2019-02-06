@@ -195,14 +195,9 @@ This API is built with Express and it's designed to provide data for a seperate 
   If no meal with the specific `:meal_id` or no food with the specific `:id` are found, a 404 status code will be returned.
   ```
   {
-    "error": "Could not find meal with id 50"
+    "error": "Could not find record with meal id 50 and food id 100"
   }
-  ```
-  ```
-  {
-    "error": "Could not find food with id 50"
-  }
-  ```  
+  ``` 
 
 ## Running Tests
 
