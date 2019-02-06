@@ -215,8 +215,8 @@ To contribute, see the setup instructions.
 
 
 ## Core Contributors
-* [Kate](https://github.com/Kate-v2)
 * [Rajaa](https://github.com/RajaaBoulassouak)
+* [Kate](https://github.com/Kate-v2)
 
 
 ## Technical
