@@ -3,7 +3,7 @@
 
 This API is built with Express and it's designed to provide data for a seperate front-end app to consume it.  The front-end app allows the user to track their daily calorie consumption by setting calorie goals for the day, via defining goals for each meal!
 
-* [See the deployed version on Heroku](https://protected-retreat-87261.herokuapp.com/)
+* Production link `https://protected-retreat-87261.herokuapp.com/`
 * [Checkout the Front-End](https://kate-v2.github.io/Quantified_Self_FE/)
 
 
