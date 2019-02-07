@@ -152,7 +152,30 @@ app.get('/api/v1/meals', (request, response) => {
     response.status(200).json(meals.rows);
   })
   .catch((error) => {
-    response.status(500).json({ error });
+    response.status(500).json({ 
+      error: 'Something went wrong'  
+    });
+  });
+});
+
+
+app.get('/api/v1/meals/:id', (request, response) => {
+  database('meals')
+  .where('id', request.params.id)
+  .select()
+  .then(meals => {
+    if (meals.length) {
+      response.status(200).json(meals);
+    } else {
+      response.status(404).json({ 
+        error: `Could not find meal with id ${request.params.id}` 
+      });
+    }
+  })
+  .catch(error => {
+    response.status(500).json({ 
+      error: 'Something went wrong' 
+    });
   });
 });
 

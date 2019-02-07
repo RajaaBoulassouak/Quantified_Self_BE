@@ -203,6 +203,37 @@ describe('API Routes', () => {
     });
   });
   
+  describe('GET /api/v1/meals/:id', () => {
+    it('should return A FOOD given the id', done => {
+      chai.request(server)
+      .get('/api/v1/meals/1')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('type');
+        response.body[0].type.should.equal('Breakfast');
+        response.body[0].should.have.property('goal_calories');
+        response.body[0].goal_calories.should.equal(650);
+        done();
+      });
+    });
+  
+    it('should return 404 if meal with given id is not found', done => {
+      chai.request(server)
+      .get('/api/v1/meals/100')
+      .end((error, response) => {
+       response.should.have.status(404);
+       response.should.be.json;
+       response.body.should.have.property('error');
+       response.body.error.should.equal('Could not find meal with id 100');
+       done();
+      });
+    });
+  });
+  
+  
   describe('PATCH /api/v1/meals/:id', () => {
     it('should UPDATE a meal given the id', (done) => {
       chai.request(server)
