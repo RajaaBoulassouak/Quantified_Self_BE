@@ -356,6 +356,18 @@ describe('API Routes', () => {
       });
     });
     
+    it('should return 404 if meal with given id is not found', done => {
+      chai.request(server)
+      .delete('/api/v1/meals/100')
+      .end((error, response) => {
+       response.should.have.status(404);
+       response.should.be.json;
+       response.body.should.have.property('error');
+       response.body.error.should.equal('Could not find meal with id 100');
+       done();
+      });
+    });
+  });
   
   
   describe('POST /api/v1/meals/:meal_id/foods/:id', () => {
