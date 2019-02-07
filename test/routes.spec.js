@@ -53,7 +53,7 @@ describe('API Routes', () => {
       });
     });
   
-    it('should NOT CREATE a record if missing any of the attributes', done => {
+    it('should NOT CREATE a new food if missing any of the attributes', done => {
       chai.request(server)
       .post('/api/v1/foods')
       .send({
@@ -78,14 +78,15 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(200);
         response.body.should.have.property('message');
-        response.body.message.should.equal('Food updated!');
+        response.body.message.should.equal('Food updated successfully!');
+        response.body.food[0].id.should.equal(1);
         response.body.food[0].title.should.equal('Orange');
         response.body.food[0].calories.should.equal(45);
         done();
       });
     });
   
-    it('should NOT UPDATE a record if missing any of the attributes', done => {
+    it('should NOT UPDATE the food if missing any of the attributes', done => {
       chai.request(server)
       .patch('/api/v1/foods/1')
       .send({
@@ -197,6 +198,36 @@ describe('API Routes', () => {
         response.body[0].should.have.property('foods');
         response.body[0].foods.should.be.a('array');
         response.body[0].foods.length.should.equal(2);
+        done();
+      });
+    });
+  });
+  
+  describe('PATCH /api/v1/meals/:id', () => {
+    it('should UPDATE a meal given the id', (done) => {
+      chai.request(server)
+      .patch('/api/v1/meals/1')
+      .send({ goal_calories: 800 })
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.body.should.have.property('message');
+        response.body.message.should.equal('Meal updated successfully!');
+        
+        response.body.meal[0].id.should.equal(1);
+        response.body.meal[0].goal_calories.should.equal(800);
+        done();
+      });
+    });
+  
+    it('should NOT UPDATE the meal if missing the goal_calories attribute', done => {
+      chai.request(server)
+      .patch('/api/v1/meals/1')
+      .send({ })
+      .end((error, response) => {
+        response.should.have.status(422);
+        response.body.error.should.equal(
+          `Expected format: { goal_calories: <Integer> }. You're missing a goal_calories property.`
+        );
         done();
       });
     });
