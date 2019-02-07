@@ -182,6 +182,61 @@ describe('API Routes', () => {
   });
   
   
+  
+  
+  
+  describe('POST /api/v1/meals', () => {
+    it('should CREATE a new meal', done => {
+      chai.request(server)
+      .post('/api/v1/meals')
+      .send({
+        type: 'Breakfast',
+        goal_calories: 700
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('object');
+        response.body.meal[0].should.have.property('id');
+        response.body.meal[0].should.have.property('type');
+        response.body.meal[0].type.should.equal('Breakfast');
+        response.body.meal[0].should.have.property('goal_calories');
+        response.body.meal[0].goal_calories.should.equal(700);
+        done();
+      });
+    });
+  
+  
+  describe('PATCH /api/v1/meals/:id', () => {
+    it('should UPDATE a meal given the id', (done) => {
+      chai.request(server)
+      .patch('/api/v1/meals/1')
+      .send({ goal_calories: 800 })
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.body.should.have.property('message');
+        response.body.message.should.equal('Meal updated successfully!');
+        
+        response.body.meal[0].id.should.equal(1);
+        response.body.meal[0].goal_calories.should.equal(800);
+        done();
+      });
+    });
+  
+    it('should NOT UPDATE the meal if missing the goal_calories attribute', done => {
+      chai.request(server)
+      .patch('/api/v1/meals/1')
+      .send({ })
+      .end((error, response) => {
+        response.should.have.status(422);
+        response.body.error.should.equal(
+          `Expected format: { goal_calories: <Integer> }. You're missing a goal_calories property.`
+        );
+        done();
+      });
+    });
+  });
+  
+  
   describe('GET /api/v1/meals', () => {
    it('should return ALL of the meals', done => {
       chai.request(server)
@@ -230,37 +285,6 @@ describe('API Routes', () => {
        response.body.should.have.property('error');
        response.body.error.should.equal('Could not find meal with id 100');
        done();
-      });
-    });
-  });
-  
-  
-  describe('PATCH /api/v1/meals/:id', () => {
-    it('should UPDATE a meal given the id', (done) => {
-      chai.request(server)
-      .patch('/api/v1/meals/1')
-      .send({ goal_calories: 800 })
-      .end((error, response) => {
-        response.should.have.status(200);
-        response.body.should.have.property('message');
-        response.body.message.should.equal('Meal updated successfully!');
-        
-        response.body.meal[0].id.should.equal(1);
-        response.body.meal[0].goal_calories.should.equal(800);
-        done();
-      });
-    });
-  
-    it('should NOT UPDATE the meal if missing the goal_calories attribute', done => {
-      chai.request(server)
-      .patch('/api/v1/meals/1')
-      .send({ })
-      .end((error, response) => {
-        response.should.have.status(422);
-        response.body.error.should.equal(
-          `Expected format: { goal_calories: <Integer> }. You're missing a goal_calories property.`
-        );
-        done();
       });
     });
   });
