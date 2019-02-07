@@ -138,6 +138,57 @@ app.delete('/api/v1/foods/:id', (request, response) => {
 });
 
 
+app.post('/api/v1/meals', (request, response) => {
+  const meal = request.body;
+  for (let requiredParameter of ['type', 'goal_calories']) {
+    if (!meal[requiredParameter]) {
+      return response.status(422).send({ 
+        error: `Expected format: { type: <String>, goal_calories: <Integer> }. You're missing a "${requiredParameter}" property.` 
+      });
+    }
+  }                          
+  database('meals')
+  .insert(meal, '*')
+  .then(meal => {
+    response.status(201).json({ 
+      message: 'Meal created successfully', meal 
+    })
+  })
+  .catch(error => {
+    response.status(400).json({ 
+      error: 'Could not create meal.'
+    });
+  });
+});
+
+
+app.patch('/api/v1/meals/:id', (request, response) => {
+  const meal = request.body;
+  for (let requiredParameter of ['goal_calories']) {
+    if (!meal[requiredParameter]) {
+      return response.status(422).send({ 
+        error: `Expected format: { goal_calories: <Integer> }. You're missing a goal_calories property.` 
+      });
+    }
+  } 
+  database('meals')
+  .where('id', request.params.id)
+  .update({ 
+    goal_calories: meal.goal_calories 
+    }, '*')
+  .then(meal => {
+    response.status(200).json({
+      message: 'Meal updated successfully!', meal
+    });
+  })
+  .catch((error) => {
+    response.status(400).json({ 
+      error: 'Could not update meal' 
+    });
+  });
+});      
+
+
 app.get('/api/v1/meals', (request, response) => {
     database.raw(
       `SELECT meals.id, meals.type, meals.goal_calories, meals.created_at, meals.updated_at, array_to_json (array_agg(json_build_object('id', foods.id, 'title', foods.title, 'calories', foods.calories, 'created_at', foods.created_at, 'updated_at', foods.updated_at)))
@@ -178,34 +229,6 @@ app.get('/api/v1/meals/:id', (request, response) => {
     });
   });
 });
-
-
-app.patch('/api/v1/meals/:id', (request, response) => {
-  const meal = request.body;
-  
-  for (let requiredParameter of ['goal_calories']) {
-    if (!meal[requiredParameter]) {
-      return response.status(422).send({ 
-        error: `Expected format: { goal_calories: <Integer> }. You're missing a goal_calories property.` 
-      });
-    }
-  } 
-  database('meals')
-  .where('id', request.params.id)
-  .update({ 
-    goal_calories: meal.goal_calories 
-    }, '*')
-  .then(meal => {
-    response.status(200).json({
-      message: 'Meal updated successfully!', meal
-    });
-  })
-  .catch((error) => {
-    response.status(400).json({ 
-      error: 'Could not update meal' 
-    });
-  });
-});      
 
 
 app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
