@@ -133,72 +133,119 @@ This API is built with Express and it's designed to provide data for a seperate 
         "id": 1,
         "type": "Breakfast",
         "goal_calories": 650,
+        "created_at": "2019-02-07T04:48:20.878Z",
+        "updated_at": "2019-02-07T04:48:20.878Z",
         "foods": [
             {
                 "id": 1,
                 "title": "Banana",
-                "calories": 105
+                "calories": 105,
+                "created_at": "2019-02-06T21:48:20.869851-07:00",
+                "updated_at": "2019-02-06T21:48:20.869851-07:00"
             },
             {
                 "id": 2,
                 "title": "Apple",
-                "calories": 95
+                "calories": 95,
+                "created_at": "2019-02-06T21:48:20.869851-07:00",
+                "updated_at": "2019-02-06T21:48:20.869851-07:00"
             }
         ]
-     },
-     {
+    },
+    {
         "id": 2,
         "type": "Lunch",
         "goal_calories": 650,
+        "created_at": "2019-02-07T04:48:20.878Z",
+        "updated_at": "2019-02-07T04:48:20.878Z",
         "foods": [
             {
                 "id": 3,
                 "title": "200g Steak",
-                "calories": 542
+                "calories": 542,
+                "created_at": "2019-02-06T21:48:20.869851-07:00",
+                "updated_at": "2019-02-06T21:48:20.869851-07:00"
             },
             {
                 "id": 4,
                 "title": "1 Serving Broccoli",
-                "calories": 50
+                "calories": 50,
+                "created_at": "2019-02-06T21:48:20.869851-07:00",
+                "updated_at": "2019-02-06T21:48:20.869851-07:00"
             }
         ]
-     },
-     {
+    },
+    {
         "id": 3,
         "type": "Dinner",
         "goal_calories": 500,
+        "created_at": "2019-02-07T04:48:20.878Z",
+        "updated_at": "2019-02-07T04:48:20.878Z",
         "foods": [
             {
                 "id": 5,
                 "title": "50g Nuts",
-                "calories": 300
+                "calories": 300,
+                "created_at": "2019-02-06T21:48:20.869851-07:00",
+                "updated_at": "2019-02-06T21:48:20.869851-07:00"
             },
             {
                 "id": 6,
                 "title": "100g Cheese",
-                "calories": 200
+                "calories": 200,
+                "created_at": "2019-02-06T21:48:20.869851-07:00",
+                "updated_at": "2019-02-06T21:48:20.869851-07:00"
             }
         ]
-     },
-     {
+    },
+    {
         "id": 4,
         "type": "Snack",
         "goal_calories": 200,
+        "created_at": "2019-02-07T04:48:20.878Z",
+        "updated_at": "2019-02-07T04:48:20.878Z",
         "foods": [
             {
                 "id": 7,
                 "title": "Chicken Soup",
-                "calories": 160
+                "calories": 160,
+                "created_at": "2019-02-06T21:48:20.869851-07:00",
+                "updated_at": "2019-02-06T21:48:20.869851-07:00"
             },
             {
                 "id": 8,
                 "title": "Garden Salad",
-                "calories": 500
+                "calories": 500,
+                "created_at": "2019-02-06T21:48:20.869851-07:00",
+                "updated_at": "2019-02-06T21:48:20.869851-07:00"
             }
         ]
      }
+ ]
+  ```
+  
+  * ***GET /api/v1/meals/:id***
+
+  This returns the meal object with the passed in `:id`.  
+  ```
+  ```
+  [
+    {
+        "id": 1,
+        "type": "Breakfast",
+        "goal_calories": 650,
+        "created_at": "2019-02-07T04:48:20.878Z",
+        "updated_at": "2019-02-07T04:48:20.878Z"
+    }
   ]
   ```
+ 
+  If no meal with the specific `:id` is found, a 404 status code will be returned.
+  ```
+  {
+    "error": "Could not find meal with id 100"
+  }
+  ``` 
 
 * ***GET /api/v1/meals/:meal_id/foods***
 
@@ -230,6 +277,57 @@ This API is built with Express and it's designed to provide data for a seperate 
     "error": "Could not find meal with id 100"
   }
   ```  
+  
+* ***POST /api/v1/meals***
+
+  This allows creating a new meal with the parameters:  
+  `{ "meal": { "type": "Name of meal here", "goal_calories": "Goal_calories here as an integer"} }`  
+  Both type and goal_calories are required fields.  
+  If the meal is successfully created, the new meal item will be returned.  
+  If the meal is not successfully created, a 400 status code will be returned.  
+  ```
+  {
+    "message": "Meal created successfully",
+    "meal": [
+        {
+            "id": 5,
+            "type": "Brunch",
+            "goal_calories": 1000,
+            "created_at": "2019-02-07T04:42:17.588Z",
+            "updated_at": "2019-02-07T04:42:17.588Z"
+        }
+    ]
+  }
+  ```
+  
+* ***PATCH /api/v1/foods/:id***
+
+  This allows updating the goal_calories of an existing meal
+  `{ "meal": { "goal_calories": "Goal_calories here as an integer"} }`    
+  goal_calories is a required field.  
+  If the meal is successfully updated, the updated meal item will be returned.  
+  If the meal is not successfully updated, a 400 status code will be returned.  
+  ```
+  {
+    {
+    "message": "Meal updated successfully!",
+    "meal": [
+        {
+            "id": 5,
+            "type": "Brunch",
+            "goal_calories": 900,
+            "created_at": "2019-02-07T04:42:17.588Z",
+            "updated_at": "2019-02-07T04:42:17.588Z"
+        }
+     ]
+  }
+  ```
+  
+  * ***DELETE /api/v1/foods/:id***
+
+  This Will delete the food with the passed in `:id`.  
+  If the food is successfully deleted, a 204 status code will be returned.  
+  If no food with the specific `:id` is found, a 404 status code will be returned. 
   
   
 * ***POST /api/v1/meals/:meal_id/foods/:id***
