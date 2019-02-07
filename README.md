@@ -221,13 +221,12 @@ This API is built with Express and it's designed to provide data for a seperate 
             }
         ]
      }
- ]
+  ]
   ```
   
   * ***GET /api/v1/meals/:id***
 
   This returns the meal object with the passed in `:id`.  
-  ```
   ```
   [
     {
