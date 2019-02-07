@@ -14,6 +14,7 @@ This API is built with Express and it's designed to provide data for a seperate 
 
 
 ## Schema Design
+![](db_schema.png)
 
 
 ## Available Endpoints  
