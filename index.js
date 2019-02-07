@@ -7,7 +7,6 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 const pry = require('pryjs')
 
-// app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
@@ -86,6 +85,19 @@ app.get('/api/v1/foods', (request, response) => {
   });
 });
 
+app.get('/api/v1/meal_foods', (request, response) => {
+  database('meal_foods')
+  .select()
+  .then((meal_foods) => {
+    response.status(200).json(meal_foods);
+  })
+  .catch((error) => {
+    response.status(500).json({ 
+      error: 'Something went wrong' 
+    });
+  });
+});
+
 
 app.get('/api/v1/foods/:id', (request, response) => {
   database('foods')
@@ -139,7 +151,7 @@ app.delete('/api/v1/foods/:id', (request, response) => {
 
 app.get('/api/v1/meals', (request, response) => {
     database.raw(
-      `SELECT meals.id, meals.type, meals.goal_calories, array_to_json (array_agg(json_build_object('id', foods.id, 'title', foods.title, 'calories', foods.calories)))
+      `SELECT meals.id, meals.type, meals.goal_calories, meals.created_at, meals.updated_at, array_to_json (array_agg(json_build_object('id', foods.id, 'title', foods.title, 'calories', foods.calories, 'created_at', foods.created_at, 'updated_at', foods.updated_at)))
       AS foods
       FROM meals
       JOIN meal_foods ON meal_foods.meal_id = meals.id
