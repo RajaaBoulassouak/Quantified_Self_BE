@@ -182,9 +182,6 @@ describe('API Routes', () => {
   });
   
   
-  
-  
-  
   describe('POST /api/v1/meals', () => {
     it('should CREATE a new meal', done => {
       chai.request(server)
@@ -204,6 +201,22 @@ describe('API Routes', () => {
         done();
       });
     });
+  
+    it('should NOT CREATE a new meal if missing any of the attributes', done => {
+      chai.request(server)
+      .post('/api/v1/meals')
+      .send({
+        goal_calories: 700,
+      })
+      .end((error, response) => {
+        response.should.have.status(422);
+        response.body.error.should.equal(
+          `Expected format: { type: <String>, goal_calories: <Integer> }. You're missing a "type" property.`
+        );
+        done();
+      });
+    });
+  });
   
   
   describe('PATCH /api/v1/meals/:id', () => {
@@ -271,7 +284,7 @@ describe('API Routes', () => {
         response.body[0].should.have.property('type');
         response.body[0].type.should.equal('Breakfast');
         response.body[0].should.have.property('goal_calories');
-        response.body[0].calories.should.equal(650);
+        response.body[0].goal_calories.should.equal(650);
         done();
       });
     });
