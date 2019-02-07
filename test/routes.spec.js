@@ -341,6 +341,23 @@ describe('API Routes', () => {
   });
   
   
+  describe('DELETE /api/v1/meals/:id', () => {
+    it('should DELETE a meal given the id', (done) => {
+      chai.request(server)
+      .delete('/api/v1/meals/1')
+      .end((error, response) => {
+        response.should.have.status(204);
+        chai.request(server)
+        .get('/api/v1/meals/1')
+        .end((error, response) => {
+          response.should.have.status(404);
+          done();
+        });
+      });
+    });
+    
+  
+  
   describe('POST /api/v1/meals/:meal_id/foods/:id', () => {
     it('should ADD A FOOD to A MEAL given their ids', done => {
       chai.request(server)
