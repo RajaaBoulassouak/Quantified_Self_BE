@@ -341,6 +341,35 @@ describe('API Routes', () => {
   });
   
   
+  describe('DELETE /api/v1/meals/:id', () => {
+    it('should DELETE a meal given the id', (done) => {
+      chai.request(server)
+      .delete('/api/v1/meals/1')
+      .end((error, response) => {
+        response.should.have.status(204);
+        chai.request(server)
+        .get('/api/v1/meals/1')
+        .end((error, response) => {
+          response.should.have.status(404);
+          done();
+        });
+      });
+    });
+    
+    it('should return 404 if meal with given id is not found', done => {
+      chai.request(server)
+      .delete('/api/v1/meals/100')
+      .end((error, response) => {
+       response.should.have.status(404);
+       response.should.be.json;
+       response.body.should.have.property('error');
+       response.body.error.should.equal('Could not find meal with id 100');
+       done();
+      });
+    });
+  });
+  
+  
   describe('POST /api/v1/meals/:meal_id/foods/:id', () => {
     it('should ADD A FOOD to A MEAL given their ids', done => {
       chai.request(server)
