@@ -172,7 +172,7 @@ app.patch('/api/v1/meals/:id', (request, response) => {
     }, '*')
   .then(meal => {
     response.status(200).json({
-      message: 'meal updated!', meal
+      message: 'Meal updated successfully!', meal
     });
   })
   .catch((error) => {
