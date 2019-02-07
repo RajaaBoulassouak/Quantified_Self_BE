@@ -218,6 +218,19 @@ describe('API Routes', () => {
         done();
       });
     });
+  
+    it('should NOT UPDATE the meal if missing the goal_calories attribute', done => {
+      chai.request(server)
+      .patch('/api/v1/meals/1')
+      .send({ })
+      .end((error, response) => {
+        response.should.have.status(422);
+        response.body.error.should.equal(
+          `Expected format: { goal_calories: <Integer> }. You're missing a goal_calories property.`
+        );
+        done();
+      });
+    });
   });
   
   
