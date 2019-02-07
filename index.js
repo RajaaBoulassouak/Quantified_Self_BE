@@ -85,19 +85,6 @@ app.get('/api/v1/foods', (request, response) => {
   });
 });
 
-// app.get('/api/v1/meal_foods', (request, response) => {
-//   database('meal_foods')
-//   .select()
-//   .then((meal_foods) => {
-//     response.status(200).json(meal_foods);
-//   })
-//   .catch((error) => {
-//     response.status(500).json({ 
-//       error: 'Something went wrong' 
-//     });
-//   });
-// });
-
 
 app.get('/api/v1/foods/:id', (request, response) => {
   database('foods')
@@ -166,6 +153,34 @@ app.get('/api/v1/meals', (request, response) => {
     response.status(500).json({ error });
   });
 });
+
+
+app.patch('/api/v1/meals/:id', (request, response) => {
+  const meal = request.body;
+  
+  for (let requiredParameter of ['goal_calories']) {
+    if (!meal[requiredParameter]) {
+      return response.status(422).send({ 
+        error: `Expected format: { goal_calories: <Integer> }. You're missing a goal_calories property.` 
+      });
+    }
+  } 
+  database('meals')
+  .where('id', request.params.id)
+  .update({ 
+    goal_calories: meal.goal_calories 
+    }, '*')
+  .then(meal => {
+    response.status(200).json({
+      message: 'meal updated!', meal
+    });
+  })
+  .catch((error) => {
+    response.status(400).json({ 
+      error: 'Could not update meal' 
+    });
+  });
+});      
 
 
 app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
