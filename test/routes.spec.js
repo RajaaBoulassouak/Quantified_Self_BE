@@ -78,7 +78,7 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(200);
         response.body.should.have.property('message');
-        response.body.message.should.equal('Food updated!');
+        response.body.message.should.equal('Food updated successfully!');
         response.body.food[0].id.should.equal(1);
         response.body.food[0].title.should.equal('Orange');
         response.body.food[0].calories.should.equal(45);

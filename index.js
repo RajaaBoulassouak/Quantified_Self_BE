@@ -34,7 +34,9 @@ app.post('/api/v1/foods', (request, response) => {
   database('foods')
   .insert(food, '*')
   .then(food => {
-    response.status(201).json({ food })
+    response.status(201).json({ 
+      message: 'Food created successfully', food 
+    })
   })
   .catch(error => {
     response.status(400).json({ 
@@ -61,7 +63,7 @@ app.patch('/api/v1/foods/:id', (request, response) => {
     }, '*')
   .then(food => {
     response.status(200).json({
-      message: 'Food updated!', food
+      message: 'Food updated successfully!', food
     });
   })
   .catch((error) => {
