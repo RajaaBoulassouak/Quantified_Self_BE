@@ -270,7 +270,36 @@ app.get('/api/v1/meals/:meal_id/foods', (request, response) => {
       error: 'Something went wrong' 
     });
   });
-});   
+});  
+
+
+app.delete('/api/v1/meals/:id', (request, response) => {
+  database('meals')
+  .where('id', request.params.id)
+  .select()
+  .then(meals => {
+    if (!meals.length) {
+      return response.status(404).json({ 
+        error: `Could not find meal with id ${request.params.id}` 
+      });
+    } 
+  })
+  database('meals')
+  .where('id', request.params.id)
+  .delete()
+  .then(meals => {
+    if (meals == 1) {
+      response.status(204).json({ 
+        success: true 
+      });
+    }
+  })
+  .catch((error) => {
+    response.status(500).json({ 
+      error: 'Something went wrong' 
+    });
+  });
+});
 
 
 app.post('/api/v1/meals/:meal_id/foods/:id', (request, response) => {  
