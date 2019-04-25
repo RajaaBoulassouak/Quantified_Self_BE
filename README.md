@@ -5,7 +5,7 @@ This API is built with Express and it's designed to provide data for a seperate 
 
 * Production link `https://protected-retreat-87261.herokuapp.com/`
 * [Checkout the deployed front-end app](https://kate-v2.github.io/Quantified_Self_FE/)
-* [Checkout the front-end repo](https:/github.com/Kate-v2/Quantified_Self_FE)
+* [Checkout the front-end repo](https://github.com/Kate-v2/Quantified_Self_FE)
 
 
 ## How to Use the API
